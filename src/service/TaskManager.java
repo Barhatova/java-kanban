@@ -35,6 +35,8 @@ public class TaskManager {
     public SubTask createSubtask(SubTask subTask) {
         subTask.setId(generateId());
         subTasks.put(subTask.getId(), subTask);
+        Epic epic = epics.get(subTask.getEpicId());
+        calculateEpicStatus();
         return subTask;
     }
 
@@ -130,15 +132,12 @@ public class TaskManager {
     }
 
     public void deleteAllSubTasks() {
-        for (Epic epic : epics.values()) {
-            epic.getSubTasks().clear();
-           calculateEpicStatus();
-        }
         subTasks.clear();
     }
 
     public void deleteAllEpics() {
         epics.clear();
+        subTasks.clear();
     }
 
     public List<SubTask> getAllSubtasksForEpic(Epic epic) {

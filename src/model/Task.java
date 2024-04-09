@@ -49,7 +49,7 @@ public class Task {
     }
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDescription(), getStatus(), getId());
+        return Objects.hash(name, description, status, id);
     }
     @Override
     public boolean equals(Object o) {
@@ -58,7 +58,8 @@ public class Task {
         if (o == null || getClass() != o.getClass())
             return false;
         Task task = (Task) o;
-        return id == task.id && Objects.equals(description, task.description);
+        return id == task.id && Objects.equals(description, task.description) &&
+                Objects.equals(name, task.name) && Objects.equals(status, task.status);
     }
        @Override
     public String toString() {

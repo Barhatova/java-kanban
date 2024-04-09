@@ -1,10 +1,9 @@
 package model;
 
-import java.util.Objects;
-
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class Epic extends Task {
 
@@ -43,7 +42,8 @@ public class Epic extends Task {
         if (!super.equals(o))
             return false;
         Epic epic = (Epic) o;
-        return Objects.equals(subTasks, epic.subTasks);
+        return getId() == epic.getId() && Objects.equals(getName(), epic.getName()) &&
+                Objects.equals(getDescription(), epic.getDescription());
     }
 
     @Override
