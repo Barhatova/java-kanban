@@ -1,5 +1,4 @@
 package model;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
@@ -8,12 +7,12 @@ import java.util.Objects;
 public class Epic extends Task {
 
     private HashMap<Integer, SubTask> subTasks;
+    private SubTask subTask;
 
     public Epic(String name, String description, Status status) {
         super(name, description, status);
         this.subTasks = new HashMap<>();
         this.setStatus(Status.NEW);
-
     }
 
     public List<SubTask> getSubTasks() {
@@ -21,6 +20,7 @@ public class Epic extends Task {
     }
 
     public void addSubTask(SubTask subTask) {
+        this.subTask = subTask;
         subTasks.put(subTask.getId(), subTask);
     }
 

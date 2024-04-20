@@ -1,5 +1,4 @@
 package model;
-
 import java.util.Objects;
 
 public class Task {
@@ -13,7 +12,6 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status = status;
-
     }
 
     public String getName() {

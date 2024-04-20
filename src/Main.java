@@ -1,48 +1,76 @@
-import model.Epic;
-import model.Status;
-import model.SubTask;
-import model.Task;
-import service.TaskManager;
+import model.*;
+import service.*;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager taskManager = new TaskManager();
+        TaskManager taskManager = Managers.getDefault();
 
-        Task task1 = taskManager.createTask(new Task("Переезд", "Купить дом", Status.IN_PROGRESS));
+        Task task1 = taskManager.createTask(new Task("Переезд", "Купить дом", Status.NEW));
+
         Task task2 = taskManager.createTask(new Task("Приготовить обед", "Купить продукты", Status.NEW));
-        System.out.println("createTask:" + task1);
-        System.out.println("createTask:" + task2);
 
         Epic epic1 = taskManager.createEpic(new Epic("Сделать ремонт", "Ремонт новой квартиры",
                 Status.NEW));
         SubTask subTask1 = taskManager.createSubtask(new SubTask("Купить материалы", "Стройматериалы",
-                Status.DONE, epic1, 3));
+                Status.DONE, epic1,2));
         SubTask subTask2 = taskManager.createSubtask(new SubTask("Нанять рабочих", "Плиткоукладчики",
-                Status.DONE, epic1, 3));
+                Status.NEW, epic1, 2));
         epic1.addSubTask(subTask1);
         epic1.addSubTask(subTask2);
-        System.out.println("createEpic:" + epic1);
 
         Epic epic2 = taskManager.createEpic(new Epic("Испечь торт", "Торт для семьи", Status.NEW));
-        SubTask subTask3 = taskManager.createSubtask(new SubTask("найти рецепт", "Торт-Птичье молоко",
-                Status.NEW, epic2,6));
+        SubTask subTask3 = taskManager.createSubtask(new SubTask("Найти рецепт", "Торт-Птичье молоко",
+                Status.NEW, epic2,5));
         epic2.addSubTask(subTask3);
-        System.out.println("createEpic:" + epic2);
 
-        System.out.println(taskManager.getAllTasks());
-        System.out.println(taskManager.getAllSubTasks());
-        System.out.println(taskManager.getAllEpics());
+        List<Task> historyBrowsing = taskManager.getHistory();
 
-        taskManager.deleteTaskById(1);
-        taskManager.deleteEpicById(6);
+        System.out.println("История:");
 
+        taskManager.getTaskById(0);
+        System.out.println(historyBrowsing.get(0));
 
-        System.out.println(taskManager.getAllEpics());
-        System.out.println(taskManager.getAllTasks());
-        System.out.println(taskManager.getAllSubTasks());
+        taskManager.getTaskById(1);
+        System.out.println(historyBrowsing.get(1));
 
-        System.out.println(taskManager.calculateEpicStatus());
+        taskManager.getEpicById(2);
+        System.out.println(historyBrowsing.get(2));
+
+        taskManager.getSubtaskById(3);
+        System.out.println(historyBrowsing.get(3));
+
+        taskManager.getSubtaskById(4);
+        System.out.println(historyBrowsing.get(4));
+
+        taskManager.getEpicById(5);
+        System.out.println(historyBrowsing.get(5));
+
+        taskManager.getSubtaskById(6);
+        System.out.println(historyBrowsing.get(6));
+
+        taskManager.getTaskById(0);
+        System.out.println(historyBrowsing.get(7));
+
+        taskManager.getTaskById(1);
+        System.out.println(historyBrowsing.get(8));
+
+        taskManager.getEpicById(2);
+        System.out.println(historyBrowsing.get(9));
+        }
     }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
