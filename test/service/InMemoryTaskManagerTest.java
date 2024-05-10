@@ -1,10 +1,16 @@
 package service;
-import model.*;
+
+import model.Epic;
+import model.Status;
+import model.SubTask;
+import model.Task;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
+
+
 
 @DisplayName("ИнМеморитэскменеджер")
 public class InMemoryTaskManagerTest {
@@ -35,7 +41,7 @@ public class InMemoryTaskManagerTest {
         SubTask subtask2 = new SubTask("subtask2", "desc2", Status.NEW, epic1, 2);
         assertEquals(subtask1.getId(), epic1.getId(), "наследники класса Task равны друг другу, \" +\n" +
                 "                \"если равен их id\" " + ", id");
-           }
+    }
 
     @DisplayName("объект Epic нельзя добавить в самого себя в виде подзадачи")
     @Test
@@ -94,7 +100,7 @@ public class InMemoryTaskManagerTest {
         Task task = new Task("Task 1", "Description 1", Status.NEW);
         Task originalTask = new Task(task.getName(), task.getDescription(), task.getStatus());
         Task addedTask = taskManager.createTask(task);
-        assertEquals(originalTask, task);
+        assertEquals(originalTask, addedTask);
     }
 
     @DisplayName("задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных")
@@ -105,4 +111,62 @@ public class InMemoryTaskManagerTest {
         List<Task> historyBrowsing = historyManager.getHistory();
         assertTrue(historyBrowsing.contains(task));
     }
+
+    @BeforeEach
+    public void createHistoryManager() {
+        TaskManager taskManager = Managers.getDefault();
+        HistoryManager historyManager = new InMemoryHistoryManager();
+    }
+
+    public Task createTask() {
+        return new Task("task", "desc", Status.NEW);
+    }
+
+    public Epic createEpic() {
+        return new Epic("epic", "epic desc", Status.NEW);
+    }
+
+    public Task createSubTask() {
+        Epic epic = new Epic("epic1", "epic desc", Status.NEW);
+        return new SubTask("subtask", "subtask desc", Status.NEW, epic, 1);
+    }
+
+    @DisplayName("проверка добавления просмотров в историю")
+    @Test
+    public void testInAdd() {
+        List<Task> history = historyManager.getHistory();
+        assertEquals(0, history.size(), "История не пустая.");
+        Task task = createTask();
+
+        historyManager.add(task);
+        history = historyManager.getHistory();
+        assertNotNull(history, "История пустая.");
+
+        historyManager.add(task);
+        assertEquals(1, history.size(), "История дублируется");
+    }
+
+    @DisplayName("удаляемые подзадачи не должны хранить внутри себя старые id")
+    @Test
+    public void testDeletedSubTasksShouldNotStoreOldIDs() {
+        Epic epic = new Epic("epic1", "epic desc1", Status.NEW);
+        SubTask subtask = new SubTask("subtask1", "subtask desc1", Status.NEW, epic, 1);
+        epic.addSubTask(subtask);
+        epic.removeSubTask(2);
+        assertFalse(epic.getSubTasks().contains(subtask), "удаляемые подзадачи не должны хранить внутри " +
+                "себя старые id");
+    }
+
+    @DisplayName("внутри эпиков не должно оставаться неактуальных id подзадач")
+    @Test
+    public void testNoActualSubTaskIDsInsideEpics() {
+        Epic epic = new Epic("epic1", "epic desc1", Status.NEW);
+        SubTask subtask1 = new SubTask("subtask1", "subtask desc1", Status.NEW, epic, 1);
+        epic.addSubTask(subtask1);
+        epic.removeSubTask(2);
+        assertFalse(epic.getSubTasks().contains(subtask1), "внутри эпиков не должно оставаться неактуальных " +
+                "id подзадач");
+    }
 }
+
+
