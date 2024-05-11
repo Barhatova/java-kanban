@@ -1,5 +1,4 @@
 package model;
-
 import java.util.Objects;
 
 public class SubTask extends Task {
@@ -12,6 +11,7 @@ public class SubTask extends Task {
         this.epicId = epicId;
         this.epic = epic;
     }
+
     public Epic getEpic() {
         return epic;
     }
