@@ -45,10 +45,12 @@ public class Task {
     public void setId(int id) {
         this.id = id;
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(name, description, status, id);
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -59,6 +61,7 @@ public class Task {
         return id == task.id && Objects.equals(description, task.description) &&
                 Objects.equals(name, task.name) && Objects.equals(status, task.status);
     }
+
        @Override
     public String toString() {
         return "Task{" +
