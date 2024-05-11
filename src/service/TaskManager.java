@@ -48,7 +48,7 @@ public interface TaskManager {
 
     List<SubTask> getAllSubtasksForEpic(Epic epic);
 
-    Status calculateEpicStatus();
+    Status calculateEpicStatus(Epic epic);
 
     List<Task> getHistory();
 }
