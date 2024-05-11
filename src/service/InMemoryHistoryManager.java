@@ -62,7 +62,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             node.prev.next = null;
         } else if (node.prev != null && node.next != null) {
             node.prev.next = node.next;
-        }
+    }
     }
 
     @Override
