@@ -20,6 +20,7 @@ public class InMemoryTaskManager implements TaskManager {
         this.epics = new HashMap<>();
         this.subTasks = new HashMap<>();
     }
+
     private int generateId() {
         return id++;
     }
@@ -141,7 +142,8 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(epicId);
         if (epic != null) {
             for (SubTask subTask : epic.getSubTasks()) {
-                subTasks.remove(subTask.getId());}
+                subTasks.remove(subTask.getId());
+            }
             epics.remove(epicId);
         }
     }
