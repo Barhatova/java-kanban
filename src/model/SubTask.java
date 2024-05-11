@@ -12,6 +12,7 @@ public class SubTask extends Task {
         this.epicId = epicId;
         this.epic = epic;
     }
+
     public Epic getEpic() {
         return epic;
     }
@@ -41,7 +42,7 @@ public class SubTask extends Task {
             return false;
         SubTask subTask = (SubTask) o;
         return getId() == subTask.getId() && Objects.equals(getDescription(), subTask.getDescription()) &&
-        Objects.equals(getName(), subTask.getName()) && Objects.equals(getEpicId(), subTask.getEpicId());
+                Objects.equals(getName(), subTask.getName()) && Objects.equals(getEpicId(), subTask.getEpicId());
     }
 
 
@@ -55,6 +56,4 @@ public class SubTask extends Task {
                 '}';
     }
 }
-
-
 
