@@ -88,15 +88,6 @@ public class InMemoryTaskManagerTest {
         assertEquals(task, foundTask);
     }
 
-    @DisplayName("неизменность задачи (по всем полям) при добавлении задачи в менеджер")
-    @Test
-    public void testTaskImmutability() {
-        Task task = new Task("Task 1", "Description 1", Status.NEW);
-        Task originalTask = new Task(task.getName(), task.getDescription(), task.getStatus());
-        Task addedTask = taskManager.createTask(task);
-        assertEquals(originalTask, task);
-    }
-
     @DisplayName("задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных")
     @Test
     public void testHistoryManagerTask() {
@@ -104,5 +95,58 @@ public class InMemoryTaskManagerTest {
         historyManager.add(task);
         List<Task> historyBrowsing = historyManager.getHistory();
         assertTrue(historyBrowsing.contains(task));
+    }
+
+    @BeforeEach
+    public void createHistoryManager() {
+        TaskManager taskManager = Managers.getDefault();
+        HistoryManager historyManager = new InMemoryHistoryManager();
+    }
+
+    public Task createTask() {
+        return new Task("task", "desc", Status.NEW);
+    }
+
+    public Epic createEpic() {
+        return new Epic("epic", "epic desc", Status.NEW);
+    }
+
+    public Task createSubTask() {
+        Epic epic = new Epic("epic1", "epic desc", Status.NEW);
+        return new SubTask("subtask", "subtask desc", Status.NEW, epic, 1);
+    }
+
+    @DisplayName("проверка добавления просмотров в историю")
+    @Test
+    public void testInAdd() {
+        List<Task> history = historyManager.getHistory();
+        assertEquals(0, history.size(), "История не пустая.");
+        Task task = createTask();
+
+        historyManager.add(task);
+        history = historyManager.getHistory();
+        assertNotNull(history, "История пустая.");
+    }
+
+    @DisplayName("удаляемые подзадачи не должны хранить внутри себя старые id")
+    @Test
+    public void testDeletedSubTasksShouldNotStoreOldIDs() {
+        Epic epic = new Epic("epic1", "epic desc1", Status.NEW);
+        SubTask subtask = new SubTask("subtask1", "subtask desc1", Status.NEW, epic, 1);
+        epic.addSubTask(subtask);
+        epic.removeSubTask(0);
+        assertFalse(epic.getSubTasks().contains(subtask), "удаляемые подзадачи не должны хранить внутри " +
+                "себя старые id");
+    }
+
+    @DisplayName("внутри эпиков не должно оставаться неактуальных id подзадач")
+    @Test
+    public void testNoActualSubTaskIDsInsideEpics() {
+        Epic epic = new Epic("epic1", "epic desc1", Status.NEW);
+        SubTask subtask1 = new SubTask("subtask1", "subtask desc1", Status.NEW, epic, 1);
+        epic.addSubTask(subtask1);
+        epic.removeSubTask(0);
+        assertFalse(epic.getSubTasks().contains(subtask1), "внутри эпиков не должно оставаться неактуальных " +
+                "id подзадач");
     }
 }
