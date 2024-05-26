@@ -9,8 +9,8 @@ class EpicTest {
     @DisplayName("Эпики должны совпадать")
     @Test
     void shouldEqualsWithCopy() {
-        Epic epic1 = new Epic("name", "desc", Status.NEW);
-        Epic epic2 = new Epic("name", "desc", Status.NEW);
+        Epic epic1 = new Epic(1,TypeTask.EPIC,"name", "desc", Status.NEW);
+        Epic epic2 = new Epic(2,TypeTask.EPIC,"name", "desc", Status.NEW);
         assertEquals(epic2, epic1, "Эпики должны совпадать");
     }
 

@@ -3,29 +3,20 @@ import java.util.Objects;
 
 public class SubTask extends Task {
 
-    public Epic epic;
-    private int epicId;
+    int epicId;
 
-    public SubTask(String name, String description, Status status, Epic epic, int epicId) {
-        super(name, description, status);
+    public SubTask(int id, TypeTask type, String name, String description, Status status, int epicId) {
+        super(id, type, name, description, status);
         this.epicId = epicId;
-        this.epic = epic;
+        this.type = type;
     }
 
-    public Epic getEpic() {
-        return epic;
-    }
-
-    public void setEpic(Epic epic) {
-        this.epic = epic;
-    }
-
-    public int getEpicId() {
-        return epicId;
-    }
-
-    public void setEpicId(int epicId) {
+    public void setEpicId(Integer epicId) {
         this.epicId = epicId;
+    }
+
+    public TypeTask getType() {
+        return TypeTask.SUBTASK;
     }
 
     @Override
@@ -41,7 +32,7 @@ public class SubTask extends Task {
             return false;
         SubTask subTask = (SubTask) o;
         return getId() == subTask.getId() && Objects.equals(getDescription(), subTask.getDescription()) &&
-        Objects.equals(getName(), subTask.getName()) && Objects.equals(getEpicId(), subTask.getEpicId());
+                Objects.equals(getName(), subTask.getName()) && Objects.equals(getEpicId(), subTask.getEpicId());
     }
 
 
@@ -49,6 +40,7 @@ public class SubTask extends Task {
     public String toString() {
         return "SubTask{" +
                 "id=" + getId() +
+                ",type=" + TypeTask.SUBTASK +
                 ", name='" + getName() + '\'' +
                 ", status='" + getStatus() + '\'' +
                 ", description='" + getDescription() + '\'' +
