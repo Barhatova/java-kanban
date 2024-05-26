@@ -1,4 +1,4 @@
-package сonverter;
+package converter;
 
 import model.*;
 import model.TypeTask;
