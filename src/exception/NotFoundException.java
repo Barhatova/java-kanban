@@ -1,5 +1,4 @@
-package Exception;
-import java.lang.constant.ConstantDesc;
+package exception;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

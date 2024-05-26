@@ -1,8 +1,7 @@
-package Converter;
+package сonverter;
 
 import model.*;
 import model.TypeTask;
-
 
     public class TaskConverter {
         public static TypeTask getType(Task task) {
@@ -10,7 +9,7 @@ import model.TypeTask;
         }
 
         public static String toString(Task task) {
-            return task.getId() + "," + task.getType() +"," + task.getName() + "," + task.getDescription() + "," +
+            return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getDescription() + "," +
                     task.getStatus() + "," + task.getEpicId();
         }
     }

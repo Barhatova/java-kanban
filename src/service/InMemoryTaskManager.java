@@ -1,9 +1,8 @@
 package service;
 
 import model.*;
-import Exception.NotFoundException;
+import exception.NotFoundException;
 
-import java.io.File;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
