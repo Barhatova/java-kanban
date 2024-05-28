@@ -8,7 +8,7 @@ public class Main {
 
         TaskManager manager = Managers.getDefault();
 
-        Epic epic1 = new Epic(0, TypeTask.EPIC,"эпик1", "Описание1", Status.NEW);
+        Epic epic1 = new Epic(0, TypeTask.EPIC,"эпик1", "описание1", Status.NEW);
         manager.createEpic(epic1);
 
         SubTask subTask1 = new SubTask(1,TypeTask.SUBTASK,"подзадача1", "описание",
@@ -28,8 +28,6 @@ public class Main {
         System.out.println(taskServiceReload.getAllSubTasks());
         System.out.println("Все эпики:");
         System.out.println(taskServiceReload.getAllEpics());
-
-
     }
 }
 

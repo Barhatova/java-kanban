@@ -26,83 +26,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this(Managers.getDefaultHistory(), file);
     }
 
-    public void init() {
-        loadFromFile();
-    }
-
     public static FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager manager = new FileBackedTaskManager(file, StandardCharsets.UTF_8);
         manager.init();
         return manager;
     }
 
-    private static Task fromString(String value) {
-        Task task = null;
-        final String[] str = value.split(",");
-        TypeTask type = TypeTask.valueOf(str[1]);
-        int id;
-        String name;
-        String description;
-        Status status;
-        int epicId;
-        switch (type) {
-            case TASK:
-                id = Integer.parseInt(str[0]);
-                name = str[2];
-                description = str[3];
-                status = Status.valueOf(str[4]);
-                task = new Task(id, type, name, description, status);
-                break;
-            case EPIC:
-                id = Integer.parseInt(str[0]);
-                name = str[2];
-                description = str[3];
-                status = Status.valueOf(str[4]);
-                task = new Epic(id, type, name, description, status);
-                break;
-            case SUBTASK:
-                id = Integer.parseInt(str[0]);
-                name = str[2];
-                description = str[3];
-                status = Status.valueOf(str[4]);
-                epicId = Integer.parseInt(str[5]);
-                task = new SubTask(id, type, name, description, status, epicId);
-                break;
-        }
-        return task;
-    }
-
-    private int getEpicId(int epicId) {
-        return epicId;
-    }
-
-    protected static void save() {
-        try (final BufferedWriter writer = new BufferedWriter(new FileWriter("resources/task.csv",
-                StandardCharsets.UTF_8))) {
-            writer.append("id, type, name, description, status, epicId\n");
-            writer.newLine();
-            for (Task task : tasks.values()) {
-                writer.write(TaskConverter.toString(task));
-                writer.newLine();
-            }
-            for (Epic epic : epics.values()) {
-                writer.write(TaskConverter.toString(epic));
-                writer.newLine();
-            }
-            for (SubTask subTask : subTasks.values()) {
-                writer.write(TaskConverter.toString(subTask));
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Ошибка файла: resources/task.csv");
-        }
+    public void init() {
+        loadFromFile();
     }
 
     private void loadFromFile() {
         List<Task> listTask = new ArrayList<>();
         int maxId = 0;
-        try (final BufferedReader reader = new BufferedReader(new FileReader("resources/task.csv",
-                StandardCharsets.UTF_8))) {
+        try (final BufferedReader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             reader.readLine();
             while (reader.ready()) {
                 String line = reader.readLine();
@@ -130,7 +67,63 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         } catch (IOException e) {
             throw new RuntimeException("Ошибка в файле: resources/task.csv");
         }
-        seq = maxId;
+        seqIdGenerationBase = maxId;
+    }
+
+    private static Task fromString(String value) {
+        Task task = null;
+        final String[] str = value.split(",");
+        TypeTask type = TypeTask.valueOf(str[1]);
+        switch (type) {
+            case TASK:
+                id = Integer.parseInt(str[0]);
+                String name = str[2];
+                String description = str[3];
+                Status status = Status.valueOf(str[4]);
+                task = new Task(id, type, name, description, status);
+                break;
+            case EPIC:
+                id = Integer.parseInt(str[0]);
+                name = str[2];
+                description = str[3];
+                status = Status.valueOf(str[4]);
+                task = new Epic(id, type, name, description, status);
+                break;
+            case SUBTASK:
+                id = Integer.parseInt(str[0]);
+                name = str[2];
+                description = str[3];
+                status = Status.valueOf(str[4]);
+                int epicId = Integer.parseInt(str[5]);
+                task = new SubTask(id, type, name, description, status, epicId);
+                break;
+        }
+        return task;
+    }
+
+    private int getEpicId(int epicId) {
+        return epicId;
+    }
+
+    protected void save() {
+        try (final BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.append("id, type, name, description, status, epicId\n");
+            writer.newLine();
+            for (Task task : tasks.values()) {
+                writer.append(TaskConverter.toString(task));
+                writer.newLine();
+            }
+            for (Epic epic : epics.values()) {
+                writer.append(TaskConverter.toString(epic));
+                writer.newLine();
+            }
+            for (SubTask subTask : subTasks.values()) {
+                writer.append(TaskConverter.toString(subTask));
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка файла: resources/task.csv");
+        }
     }
 
     @Override

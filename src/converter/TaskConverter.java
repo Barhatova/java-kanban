@@ -4,7 +4,8 @@ import model.*;
 import model.TypeTask;
 
     public class TaskConverter {
-        public static TypeTask getType(Task task) {
+
+        public TypeTask getType(Task task) {
            return TypeTask.TASK;
         }
 

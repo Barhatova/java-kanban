@@ -12,14 +12,14 @@ public class InMemoryTaskManager implements TaskManager {
     protected static HashMap<Integer, Epic> epics;
     protected HistoryManager historyManager;
     protected static int id = 0;
-    protected int seq;
+    protected int seqIdGenerationBase;
 
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.historyManager = historyManager;
         this.tasks = new HashMap<>();
         this.epics = new HashMap<>();
         this.subTasks = new HashMap<>();
-        seq = 0;
+        seqIdGenerationBase = 0;
     }
 
     private int generateId() {
