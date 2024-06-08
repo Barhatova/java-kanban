@@ -1,17 +1,12 @@
 package model;
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class SubTask extends Task {
 
     Integer epicId;
-    public LocalDateTime startTime;
-    private Duration duration;
-    private LocalDateTime endTime;
-
+    
     public SubTask(int id, TypeTask type, String name, String description, Status status, Integer epicId,
                    LocalDateTime startTime, Duration duration) {
         super(id, type, name, description, status, startTime, duration);
@@ -67,6 +62,4 @@ public class SubTask extends Task {
                 '}';
     }
 }
-
-
 
