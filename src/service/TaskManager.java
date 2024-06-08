@@ -10,17 +10,11 @@ public interface TaskManager {
 
     Epic createEpic(Epic epic);
 
-    Task getTask(int id);
+    void updateTask(Task updatedTask);
 
-    SubTask getSubTask(int id);
+    void updateSubtask(SubTask subtask);
 
-    Epic getEpic(int id);
-
-    Task updateTask(Task updatedTask);
-
-    SubTask updateSubtask(SubTask updatedSubtask);
-
-    Epic updateEpic(Epic updatedEpic);
+    void updateEpic(Epic epic);
 
     List<Task> getAllTasks();
 

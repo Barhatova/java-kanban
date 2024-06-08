@@ -1,0 +1,5 @@
+id, type, name, description, status, epicId
+
+1,TASK,задача1,описание1,NEW,null
+2,TASK,задача2,описание2,NEW,null
+0,EPIC,эпик1,описание1,NEW,null

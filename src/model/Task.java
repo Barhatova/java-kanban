@@ -7,11 +7,18 @@ public class Task {
     private String description;
     private Status status;
     private int id;
+    protected TypeTask type;
 
-    public Task(String name, String description, Status status) {
+    public Task(int id, TypeTask type, String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.id = id;
+        this.type = type;
+    }
+
+    public Integer getEpicId() {
+        return null;
     }
 
     public String getName() {
@@ -20,6 +27,10 @@ public class Task {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public TypeTask getType() {
+        return TypeTask.TASK;
     }
 
     public String getDescription() {
@@ -42,7 +53,7 @@ public class Task {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -62,10 +73,11 @@ public class Task {
                 Objects.equals(name, task.name) && Objects.equals(status, task.status);
     }
 
-       @Override
+    @Override
     public String toString() {
         return "Task{" +
                 "id=" + id +
+                ",type=" + TypeTask.TASK +
                 ", name='" + name + '\'' +
                 ", status='" + status + '\'' +
                 ", description='" + description + '\'' +

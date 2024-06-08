@@ -1,31 +1,36 @@
 package model;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class Epic extends Task {
 
-    private HashMap<Integer, SubTask> subTasks;
+    private ArrayList<SubTask> listSubTasks = new ArrayList<>();
     private SubTask subTask;
 
-    public Epic(String name, String description, Status status) {
-        super(name, description, status);
-        this.subTasks = new HashMap<>();
+    public Epic(int id, TypeTask type, String name, String description, Status status) {
+        super(id, type, name, description, status);
         this.setStatus(Status.NEW);
-    }
-
-    public List<SubTask> getSubTasks() {
-        return new ArrayList<>(subTasks.values());
+        this.type = type;
     }
 
     public void addSubTask(SubTask subTask) {
-        this.subTask = subTask;
-        subTasks.put(subTask.getId(), subTask);
+        listSubTasks.add(subTask);
     }
 
-    public void removeSubTask(int subTaskId) {
-        subTasks.remove(subTaskId);
+    public void removeSubTask(SubTask subTask) {
+        listSubTasks.remove(subTask);
+    }
+
+    public ArrayList<SubTask> getListSubTasks() {
+        return listSubTasks;
+    }
+
+    public void deleteList() {
+        listSubTasks.clear();
+    }
+
+    public TypeTask getType() {
+        return TypeTask.EPIC;
     }
 
     @Override
@@ -50,6 +55,7 @@ public class Epic extends Task {
     public String toString() {
         return "Epic{" +
                 "id=" + getId() +
+                ",type=" + TypeTask.EPIC +
                 ", name='" + getName() + '\'' +
                 ", status='" + getStatus() + '\'' +
                 ", description='" + getDescription() + '\'' +
