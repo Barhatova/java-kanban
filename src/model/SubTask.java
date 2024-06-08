@@ -6,7 +6,6 @@ import java.util.Objects;
 public class SubTask extends Task {
 
     Integer epicId;
-    
     public SubTask(int id, TypeTask type, String name, String description, Status status, Integer epicId,
                    LocalDateTime startTime, Duration duration) {
         super(id, type, name, description, status, startTime, duration);
