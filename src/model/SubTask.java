@@ -1,31 +1,42 @@
 package model;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class SubTask extends Task {
 
-    public Epic epic;
-    private int epicId;
+    Integer epicId;
+    public LocalDateTime startTime;
+    private Duration duration;
+    private LocalDateTime endTime;
 
-    public SubTask(String name, String description, Status status, Epic epic, int epicId) {
-        super(name, description, status);
+    public SubTask(int id, TypeTask type, String name, String description, Status status, Integer epicId,
+                   LocalDateTime startTime, Duration duration) {
+        super(id, type, name, description, status, startTime, duration);
+        this.type = type;
         this.epicId = epicId;
-        this.epic = epic;
     }
 
-    public Epic getEpic() {
-        return epic;
+    public SubTask(int id, TypeTask type, String name, String description, Status status, Integer epicId) {
+        super(id, type, name, description, status);
+        this.type = type;
+        this.epicId = epicId;
     }
 
-    public void setEpic(Epic epic) {
-        this.epic = epic;
-    }
-
-    public int getEpicId() {
+    @Override
+    public Integer getEpicId() {
         return epicId;
     }
 
-    public void setEpicId(int epicId) {
+    public void setEpicId(Integer epicId) {
         this.epicId = epicId;
+    }
+
+    @Override
+    public TypeTask getType() {
+        return TypeTask.SUBTASK;
     }
 
     @Override
@@ -41,7 +52,7 @@ public class SubTask extends Task {
             return false;
         SubTask subTask = (SubTask) o;
         return getId() == subTask.getId() && Objects.equals(getDescription(), subTask.getDescription()) &&
-        Objects.equals(getName(), subTask.getName()) && Objects.equals(getEpicId(), subTask.getEpicId());
+                Objects.equals(getName(), subTask.getName()) && Objects.equals(getEpicId(), subTask.getEpicId());
     }
 
 
@@ -49,6 +60,7 @@ public class SubTask extends Task {
     public String toString() {
         return "SubTask{" +
                 "id=" + getId() +
+                ",type=" + TypeTask.SUBTASK +
                 ", name='" + getName() + '\'' +
                 ", status='" + getStatus() + '\'' +
                 ", description='" + getDescription() + '\'' +

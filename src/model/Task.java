@@ -1,4 +1,8 @@
 package model;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class Task {
@@ -7,11 +11,47 @@ public class Task {
     private String description;
     private Status status;
     private int id;
+    protected TypeTask type;
+    private LocalDateTime startTime;
+    private Duration duration;
+    private LocalDateTime endTime;
 
-    public Task(String name, String description, Status status) {
+    public Task(int id, TypeTask type, String name, String description, Status status) {
+        this.id = id;
+        this.type = type;
         this.name = name;
         this.description = description;
         this.status = status;
+        this.startTime = LocalDateTime.now();
+        this.duration = Duration.ofMinutes(15);
+        this.endTime = startTime.plus(duration.toMinutes(), ChronoUnit.MINUTES);
+    }
+
+    public Task(int id, TypeTask type, String name, String description, Status status, LocalDateTime startTime,
+                Duration duration) {
+        this.id = id;
+        this.type = type;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.startTime = startTime;
+        this.duration = duration;
+        this.endTime = startTime.plus(duration.toMinutes(), ChronoUnit.MINUTES);
+    }
+
+    public Task(Task task) {
+        this.id = task.id;
+        this.type = task.type;
+        this.name = task.name;
+        this.description = task.description;
+        this.status = task.status;
+        this.startTime = task.startTime;
+        this.duration = task.duration;
+        this.endTime = task.endTime;
+    }
+
+    public Integer getEpicId() {
+        return null;
     }
 
     public String getName() {
@@ -20,6 +60,10 @@ public class Task {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public TypeTask getType() {
+        return TypeTask.TASK;
     }
 
     public String getDescription() {
@@ -42,8 +86,32 @@ public class Task {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     @Override
@@ -62,10 +130,11 @@ public class Task {
                 Objects.equals(name, task.name) && Objects.equals(status, task.status);
     }
 
-       @Override
+    @Override
     public String toString() {
         return "Task{" +
                 "id=" + id +
+                ",type=" + TypeTask.TASK +
                 ", name='" + name + '\'' +
                 ", status='" + status + '\'' +
                 ", description='" + description + '\'' +

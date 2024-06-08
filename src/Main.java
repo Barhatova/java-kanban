@@ -1,88 +1,59 @@
-import model.Epic;
-import model.Status;
-import model.SubTask;
-import model.Task;
-import service.Managers;
-import service.TaskManager;
-import service.InMemoryHistoryManager;
-import service.HistoryManager;
-import java.util.*;
+import exception.ValidationException;
+import model.*;
+import service.*;
+import java.io.File;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ValidationException {
 
-        TaskManager taskManager = Managers.getDefault();
-        HistoryManager historyManager = new InMemoryHistoryManager();
+        TaskManager manager = Managers.getDefault();
 
-        Task task1 = taskManager.createTask(new Task("Переезд", "Купить дом", Status.NEW));
-        Task task2 = taskManager.createTask(new Task("Приготовить обед", "Купить продукты", Status.NEW));
+        Epic epic = new Epic(0, TypeTask.EPIC, "эпик", "описание эпика", Status.NEW);
+        manager.createEpic(epic);
 
-        Epic epic1 = taskManager.createEpic(new Epic("Сделать ремонт", "Ремонт новой квартиры",
-                Status.NEW));
-        SubTask subTask1 = taskManager.createSubtask(new SubTask("Составить план", "Просчитать расходы",
-                Status.NEW, epic1,2));
-        SubTask subTask2 = taskManager.createSubtask(new SubTask("Нанять рабочих", "Плиткоукладчики",
-                Status.NEW, epic1, 2));
-        SubTask subTask3 = taskManager.createSubtask(new SubTask("Купить материалы", "Стройматериалы",
-                Status.NEW, epic1, 2));
-        epic1.addSubTask(subTask1);
-        epic1.addSubTask(subTask2);
-        epic1.addSubTask(subTask3);
+        SubTask s1 = new SubTask(1,TypeTask.SUBTASK,"подзадача1", "описаниеСабтаска", Status.NEW,
+                epic.getId(), LocalDateTime.of(2024,06,07,18,00,00),
+                Duration.ofMinutes(15));
+        manager.createSubtask(s1);
+        epic.addSubTask(s1);
+        SubTask s2 = new SubTask(2,TypeTask.SUBTASK,"подзадача2", "описаниеСабтаска", Status.NEW,
+                epic.getId(), LocalDateTime.of(2024,06,07,18,20,00),
+                Duration.ofMinutes(15));
+        manager.createSubtask(s2);
+        epic.addSubTask(s2);
+        SubTask s3 = new SubTask(3,TypeTask.SUBTASK,"подзадача3", "описаниеСабтаска", Status.NEW,
+                epic.getId(), LocalDateTime.of(2024,06,07,18,40,00),
+                Duration.ofMinutes(15));
+        manager.createSubtask(s3);
+        epic.addSubTask(s3);
 
-        Epic epic2 = taskManager.createEpic(new Epic("Испечь торт", "Торт для семьи", Status.NEW));
-        List<Task> history = historyManager.getHistory();
+        Task task1 = new Task(4, TypeTask.TASK, "задача1", "описаниеТаска1", Status.NEW,
+                LocalDateTime.of(2024,06,07,19,00,00), Duration.ofMinutes(15));
+        manager.createTask(task1);
+        Task task2 = new Task(5, TypeTask.TASK, "задача2", "описаниеТаска2", Status.NEW,
+                LocalDateTime.of(2024,06,07,19,20,00), Duration.ofMinutes(15));
+        manager.createTask(task2);
 
-        System.out.println("История:");
-
-        history.add(task1);
-        System.out.println(history.get(0));
-
-        history.add(task2);
-        System.out.println(history.get(1));
-
-        history.add(epic1);
-        System.out.println(history.get(2));
-
-        history.add(epic2);
-        System.out.println(history.get(3));
-
-        history.add(task2);
-        System.out.println(history.get(1));
-
-        history.add(task1);
-        System.out.println(history.get(0));
-
-        history.add(epic1);
-        System.out.println(history.get(2));
-
-        history.add(epic2);
-        System.out.println(history.get(3));
-
-        history.add(task2);
-        System.out.println(history.get(1));
-
-        history.add(task1);
-        System.out.println(history.get(0));
-
-        history.remove(9);
-
-        history.remove(2);
-
-        Set<Task> uniqueHistory = new HashSet<>();
-        uniqueHistory.addAll(history);
-
-        System.out.println(uniqueHistory);
+        TaskManager taskServiceReload = FileBackedTaskManager.loadFromFile(new File("resources/task.csv"));
+        System.out.println("Все задачи:");
+        System.out.println(taskServiceReload.getAllTasks());
+        System.out.println("Все сабтакси:");
+        System.out.println(taskServiceReload.getAllSubTasks());
+        System.out.println("Все эпики:");
+        System.out.println(taskServiceReload.getAllEpics());
+        System.out.println("Задачи из приоритизированного списка:");
+        System.out.println(manager.getPrioritizedTasks());
+        System.out.println("Продолжительность эпика:");
+        System.out.println(epic.getDuration());
+        System.out.println("Начало эпика:");
+        System.out.println(epic.getStartTime());
+        System.out.println("Окончание эпика:");
+        System.out.println(epic.getEndTime());
     }
 }
-
-
-
-
-
-
-
-
 
 
 

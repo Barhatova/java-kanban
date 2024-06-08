@@ -1,26 +1,21 @@
 package service;
+import exception.ValidationException;
 import model.*;
 import model.Status;
 import java.util.List;
 
 public interface TaskManager {
-    Task createTask(Task task);
+    Task createTask(Task task) throws ValidationException;
 
-    SubTask createSubtask(SubTask subTask);
+    SubTask createSubtask(SubTask subTask) throws ValidationException;
 
     Epic createEpic(Epic epic);
 
-    Task getTask(int id);
+    void updateTask(Task updatedTask) throws ValidationException;
 
-    SubTask getSubTask(int id);
+    void updateSubtask(SubTask subtask) throws ValidationException;
 
-    Epic getEpic(int id);
-
-    Task updateTask(Task updatedTask);
-
-    SubTask updateSubtask(SubTask updatedSubtask);
-
-    Epic updateEpic(Epic updatedEpic);
+    void updateEpic(Epic epic);
 
     List<Task> getAllTasks();
 
@@ -51,4 +46,6 @@ public interface TaskManager {
     Status calculateEpicStatus(Epic epic);
 
     List<Task> getHistory();
+
+    List<Task> getPrioritizedTasks();
 }

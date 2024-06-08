@@ -6,48 +6,48 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     Map<Integer, Node> historyBrowsing = new HashMap<>();
     Node head;
-	Node tail;
+    Node tail;
 
     private static class Node {
-	Node prev;
-	Task item;
-	Node next;
+        Node prev;
+        Task item;
+        Node next;
 
-    Node(Node prev, Task item, Node next) {
-        this.prev = prev;
-        this.item = item;
-        this.next = next;
-    }
+        Node(Node prev, Task item, Node next) {
+            this.prev = prev;
+            this.item = item;
+            this.next = next;
+        }
     }
 
     @Override
-	public void add(Task task) {
+    public void add(Task task) {
         Node node = historyBrowsing.get(task.getId());
-    if (node != null) {
-        removeNode(node);
-    }
+        if (node != null) {
+            removeNode(node);
+        }
         linkLast(task);
     }
 
     @Override
-	public void remove(int id) {
+    public void remove(int id) {
         Node node = historyBrowsing.get(id);
-        	if (node != null) {
-            	removeNode(node);
-            	historyBrowsing.remove(id);
-            	}
-        	}
+        if (node != null) {
+            removeNode(node);
+            historyBrowsing.remove(id);
+        }
+    }
 
     void linkLast(Task task) {
         Node oldTail = tail;
         Node newNode = new Node(head, task, oldTail);
         tail = newNode;
-        	if (oldTail == null) {
-                head = newNode;
-            	} else {
-                oldTail.prev = newNode;
-            	}
-            historyBrowsing.put(task.getId(), newNode);
+        if (oldTail == null) {
+            head = newNode;
+        } else {
+            oldTail.prev = newNode;
+        }
+        historyBrowsing.put(task.getId(), newNode);
     }
 
     private void removeNode(Node node) {
@@ -66,7 +66,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-	public List<Task> getHistory() {
+    public List<Task> getHistory() {
         List<Task> history = new LinkedList<>();
         Node current = head;
         while (current != null) {
