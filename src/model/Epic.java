@@ -40,11 +40,11 @@ public class Epic extends Task {
         if (subTasks.isEmpty()) {
             return LocalDateTime.MAX;
         }
-        List<SubTask> subtaskList = subTasks.values()
+        List<SubTask> subTaskList = subTasks.values()
                 .stream()
                 .sorted(Comparator.comparing(SubTask::getEndTime).reversed())
                 .collect(Collectors.toList());
-        endTime = subtaskList.get(0).getEndTime();
+        endTime = subTaskList.get(0).getEndTime();
         return endTime;
     }
 
@@ -54,8 +54,8 @@ public class Epic extends Task {
         }
 
         Duration duration = Duration.ZERO;
-        for (SubTask subtask : subTasks.values()) {
-            duration = duration.plus(subtask.getDuration());
+        for (SubTask subTask : subTasks.values()) {
+            duration = duration.plus(subTask.getDuration());
         }
         return duration;
     }

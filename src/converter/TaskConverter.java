@@ -11,7 +11,7 @@ import model.TypeTask;
 
         public static String toString(Task task) {
             return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getDescription() + "," +
-                    task.getStatus() + "," + task.getEpicId();
+                    task.getStatus() + "," + task.getEpicId() + "," + task.getStartTime() + "," + task.getDuration();
         }
     }
 

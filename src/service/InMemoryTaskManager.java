@@ -3,6 +3,8 @@ package service;
 import exception.ValidationException;
 import model.*;
 import exception.NotFoundException;
+
+import java.time.Duration;
 import java.util.*;
 
 
@@ -211,6 +213,7 @@ public class InMemoryTaskManager implements TaskManager {
         return  subTasksList;
     }
 
+
     @Override
     public Status calculateEpicStatus(Epic epic) {
         boolean allDone = true;
@@ -218,16 +221,16 @@ public class InMemoryTaskManager implements TaskManager {
         if (subTasks.isEmpty()) {
             return Status.NEW;
         }
-        for (SubTask subTask : subTasks.values()) {
-            if (subTask.getStatus() != Status.DONE) {
-                allDone = false;
-            } else if (subTask.getStatus() != Status.NEW) {
-                allNew = false;
+            for (SubTask subTask : subTasks.values()) {
+                if (subTask.getStatus() != Status.DONE) {
+                    allDone = false;
+                } else if (subTask.getStatus() != Status.NEW) {
+                    allNew = false;
+                }
+                if (subTask.getStartTime().isBefore(epic.getStartTime())) {
+                    epic.setStartTime(subTask.getStartTime());
+                }
             }
-            if (subTask.getStartTime().isBefore(epic.getStartTime())) {
-                epic.setStartTime(subTask.getStartTime());
-            }
-        }
         if (allDone) {
             return Status.DONE;
         } else if (allNew) {
