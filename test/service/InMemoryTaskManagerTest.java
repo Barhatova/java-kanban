@@ -1,15 +1,10 @@
 package service;
 import exception.ValidationException;
 import model.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.File;
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.List;
 
 @DisplayName("ИнМеморитэскменеджер")
@@ -34,10 +29,10 @@ public class InMemoryTaskManagerTest {
     @Test
     public void testTaskNotConflictWithinManager() throws ValidationException {
         Task task1 = new Task(4, TypeTask.TASK, "задача1", "описаниеТаска1", Status.NEW,
-                LocalDateTime.of(2024,06,07,19,00,00), Duration.ofMinutes(15));
+                LocalDateTime.of(2024,06,07,22,15,00), Duration.ofMinutes(15));
         taskManager.createTask(task1);
         Task task2 = new Task(5, TypeTask.TASK, "задача2", "описаниеТаска2", Status.NEW,
-                LocalDateTime.of(2024,06,07,19,20,00), Duration.ofMinutes(15));
+                LocalDateTime.of(2024,06,07,22,30,00), Duration.ofMinutes(15));
         taskManager.createTask(task2);
         assertNotEquals(task1.getId(), task2.getId());
     }
@@ -78,12 +73,12 @@ public class InMemoryTaskManagerTest {
         manager.createEpic(epic);
 
         SubTask s1 = new SubTask(1,TypeTask.SUBTASK,"подзадача1", "описаниеСабтаска", Status.NEW,
-                epic.getId(), LocalDateTime.of(2024,06,07,18,00,00),
+                epic.getId(), LocalDateTime.of(2024,06,07,21,00,00),
                 Duration.ofMinutes(15));
         manager.createSubtask(s1);
         epic.addSubTask(s1);
         SubTask s2 = new SubTask(2,TypeTask.SUBTASK,"подзадача2", "описаниеСабтаска", Status.NEW,
-                epic.getId(), LocalDateTime.of(2024,06,07,18,20,00),
+                epic.getId(), LocalDateTime.of(2024,06,07,21,20,00),
                 Duration.ofMinutes(15));
         manager.createSubtask(s2);
         epic.addSubTask(s2);

@@ -1,15 +1,10 @@
 package service;
-
-import exception.ValidationException;
 import model.*;
-import model.TypeTask;
 import converter.TaskConverter;
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.*;
 import java.nio.file.Paths;
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.*;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -48,6 +43,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             while (reader.ready()) {
                 String line = reader.readLine();
                 final Task task = fromString(line);
+                prioritizedTasks.add(task);
                 listTask.add(task);
                 final int id = task.getId();
                 if (task.getType() == TypeTask.TASK) {
@@ -135,14 +131,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Task createTask(Task task) throws ValidationException {
+    public Task createTask(Task task) {
         super.createTask(task);
         save();
         return task;
     }
 
     @Override
-    public SubTask createSubtask(SubTask subTask) throws ValidationException {
+    public SubTask createSubtask(SubTask subTask) {
         super.createSubtask(subTask);
         save();
         return subTask;
@@ -156,13 +152,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateTask(Task task) throws ValidationException {
+    public void updateTask(Task task) {
         super.updateTask(task);
         save();
     }
 
     @Override
-    public void updateSubtask(SubTask subTask) throws ValidationException {
+    public void updateSubtask(SubTask subTask) {
         super.updateSubtask(subTask);
         save();
     }

@@ -1,19 +1,17 @@
 package service;
-import exception.ValidationException;
 import model.*;
-import model.Status;
 import java.util.List;
 
 public interface TaskManager {
-    Task createTask(Task task) throws ValidationException;
+    Task createTask(Task task);
 
-    SubTask createSubtask(SubTask subTask) throws ValidationException;
+    SubTask createSubtask(SubTask subTask);
 
     Epic createEpic(Epic epic);
 
-    void updateTask(Task updatedTask) throws ValidationException;
+    void updateTask(Task updatedTask);
 
-    void updateSubtask(SubTask subtask) throws ValidationException;
+    void updateSubtask(SubTask subtask);
 
     void updateEpic(Epic epic);
 

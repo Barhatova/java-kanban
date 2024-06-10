@@ -1,9 +1,11 @@
 package service;
-
-import exception.ValidationException;
+import exception.*;
 import model.*;
-import exception.NotFoundException;
+import java.time.LocalDateTime;
 import java.util.*;
+
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.nullsLast;
 
 public class InMemoryTaskManager implements TaskManager {
 
@@ -14,7 +16,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected static int id = 0;
     protected int seqIdGenerationBase;
 
-    TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
+    TreeSet<Task> prioritizedTasks = new TreeSet<>(comparing(Task::getStartTime, nullsLast(LocalDateTime::compareTo)));
 
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.historyManager = historyManager;
@@ -24,12 +26,14 @@ public class InMemoryTaskManager implements TaskManager {
         seqIdGenerationBase = 0;
     }
 
-    private void checkTaskTime(Task task) throws ValidationException {
+    void checkTaskTime(Task task) {
         for (Task t : prioritizedTasks) {
             if (t.getId() == task.getId()) {
                 continue;
             }
-            if (t.getEndTime().isAfter(task.getStartTime()) && task.getStartTime().isBefore(t.getEndTime())) {
+            if ((t.getEndTime().isAfter(task.getStartTime()) && task.getStartTime().isBefore(t.getEndTime())) ||
+                    (t.getStartTime().equals(task.getStartTime()) && task.getEndTime().equals(t.getEndTime())) ||
+               (t.getEndTime().equals(task.getStartTime()) && task.getStartTime().equals(t.getEndTime()))) {
                 throw new ValidationException("Пересечение с задачей:" + task);
             }
         }
@@ -40,16 +44,16 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task createTask(Task task) throws ValidationException {
+    public Task createTask(Task task) {
         task.setId(generateId());
         prioritizedTasks.add(task);
-        checkTaskTime(task);
+        //checkTaskTime(task);
         tasks.put(task.getId(), task);
         return task;
     }
 
     @Override
-    public SubTask createSubtask(SubTask subTask) throws ValidationException {
+    public SubTask createSubtask(SubTask subTask) {
         Epic epic = epics.get(subTask.getEpicId());
         subTask.setId(generateId());
         prioritizedTasks.add(subTask);
@@ -75,7 +79,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task task) throws ValidationException {
+    public void updateTask(Task task) {
         Task updateTask = tasks.get(task.getId());
         if (updateTask == null) {
             throw new NotFoundException("Не найдена задача: " + task.getId());
@@ -87,7 +91,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateSubtask(SubTask subTask) throws ValidationException {
+    public void updateSubtask(SubTask subTask) {
         Integer epicId = subTask.getEpicId();
         Epic savedEpic = epics.get(epicId);
         if (savedEpic == null) {

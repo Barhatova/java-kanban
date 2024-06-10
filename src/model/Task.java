@@ -1,6 +1,5 @@
 package model;
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
@@ -14,6 +13,13 @@ public class Task {
     private LocalDateTime startTime;
     private Duration duration;
     private LocalDateTime endTime;
+
+    public Task(int id, TypeTask type, String name, String description) {
+        this.id = id;
+        this.type = type;
+        this.name = name;
+        this.description = description;
+    }
 
     public Task(int id, TypeTask type, String name, String description, Status status) {
         this.id = id;
