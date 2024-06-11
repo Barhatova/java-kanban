@@ -1,6 +1,5 @@
 package service;
 import model.*;
-import model.Status;
 import java.util.List;
 
 public interface TaskManager {
@@ -45,4 +44,6 @@ public interface TaskManager {
     Status calculateEpicStatus(Epic epic);
 
     List<Task> getHistory();
+
+    List<Task> getPrioritizedTasks();
 }
