@@ -3,6 +3,7 @@ import exception.*;
 import model.*;
 import java.time.LocalDateTime;
 import java.util.*;
+
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.nullsLast;
 
@@ -25,14 +26,6 @@ public class InMemoryTaskManager implements TaskManager {
         seqIdGenerationBase = 0;
     }
 
-    public InMemoryTaskManager() {
-        this.historyManager = historyManager;
-        this.tasks = new HashMap<>();
-        this.epics = new HashMap<>();
-        this.subTasks = new HashMap<>();
-        seqIdGenerationBase = 0;
-    }
-
     void checkTaskTime(Task task) {
         for (Task t : prioritizedTasks) {
             if (t.getId() == task.getId()) {
@@ -41,7 +34,6 @@ public class InMemoryTaskManager implements TaskManager {
             if ((t.getEndTime().isAfter(task.getStartTime()) && task.getStartTime().isBefore(t.getEndTime())) ||
                     (t.getStartTime().equals(task.getStartTime()) && task.getEndTime().equals(t.getEndTime())) ||
                     (t.getEndTime().equals(task.getStartTime()) && task.getStartTime().equals(t.getEndTime()))) {
-               (t.getEndTime().equals(task.getStartTime()) && task.getStartTime().equals(t.getEndTime()))) {
                 throw new ValidationException("Пересечение с задачей:" + task);
             }
         }
@@ -108,6 +100,7 @@ public class InMemoryTaskManager implements TaskManager {
         checkTaskTime(subTask);
         prioritizedTasks.add(subTask);
         tasks.put(subTask.getId(), subTask);
+    }
 
     @Override
     public void updateEpic(Epic epic) {
@@ -176,13 +169,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteSubtaskById(int subTaskId) {
-        SubTask removeSubTask = subTasks.remove(subTaskId);
-        Integer epicId = removeSubTask.getEpicId();
+        SubTask removeSubtask = subTasks.remove(subTaskId);
+        Integer epicId = removeSubtask.getEpicId();
         Epic epicSaved = epics.get(epicId);
         calculateEpicStatus(epicSaved);
         historyManager.remove(subTaskId);
-        if (removeSubTask == null) {
-            throw new NotFoundException("Подзадача не найдена: " + removeSubTask);
+        if (removeSubtask == null) {
+            throw new NotFoundException("Подзадача не найдена: " + removeSubtask);
         }
     }
 

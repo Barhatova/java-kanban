@@ -39,7 +39,6 @@ public interface TaskManager {
 
     void deleteAllEpics();
 
-
     List<SubTask> getAllSubTasksForEpic(Epic epic);
 
     Status calculateEpicStatus(Epic epic);
