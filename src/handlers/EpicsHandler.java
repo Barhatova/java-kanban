@@ -29,7 +29,7 @@ public class EpicsHandler implements HttpHandler {
                 if (query == null) {
                     statusCode = 200;
                     response = HttpTaskServer.getGson().toJson(manager.getAllEpics());
-                    System.out.println("GET EPICS: " + response );
+                    System.out.println("GET EPICS: " + response);
 
                 } else {
                     try {
