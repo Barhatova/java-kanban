@@ -1,34 +1,86 @@
 package model;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.time.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Epic extends Task {
 
-    private ArrayList<SubTask> listSubTasks = new ArrayList<>();
+    private HashMap<Integer, SubTask> subTasks;
     private SubTask subTask;
+    private LocalDateTime startTime;
+    private Duration duration;
+    private LocalDateTime endTime;
 
     public Epic(int id, TypeTask type, String name, String description, Status status) {
-        super(id, type, name, description, status);
+        super(id, type, name, description, Status.NEW);
+        this.subTasks = new HashMap<>();
         this.setStatus(Status.NEW);
         this.type = type;
     }
 
+    public Epic(int id, TypeTask type, String name, String description) {
+        super(id, type, name, description, Status.NEW, LocalDateTime.now(), Duration.ofMinutes(15));
+        this.subTasks = new HashMap<>();
+        this.setStatus(Status.NEW);
+        this.type = type;
+    }
+
+    public Epic(int id, TypeTask type, String name, String description, Status status, LocalDateTime startTime,
+                Duration duration) {
+        super(id, type, name, description, status, startTime, duration);
+        this.subTasks = new HashMap<>();
+        this.setStatus(Status.NEW);
+        this.type = type;
+        this.startTime = startTime;
+        this.duration = duration;
+    }
+
+    public LocalDateTime getEndTime() {
+        if (subTasks.isEmpty()) {
+            return LocalDateTime.MAX;
+        }
+        List<SubTask> subTaskList = subTasks.values()
+                .stream()
+                .sorted(Comparator.comparing(SubTask::getEndTime).reversed())
+                .collect(Collectors.toList());
+        endTime = subTaskList.get(0).getEndTime();
+        return endTime;
+    }
+
+    public Duration getDuration() {
+        if (subTasks == null || subTasks.isEmpty()) {
+            return Duration.ZERO;
+        }
+
+        Duration duration = Duration.ZERO;
+        for (SubTask subTask : subTasks.values()) {
+            duration = duration.plus(subTask.getDuration());
+        }
+        return duration;
+    }
+
     public void addSubTask(SubTask subTask) {
-        listSubTasks.add(subTask);
+        this.subTask = subTask;
+        subTasks.put(subTask.getId(), subTask);
     }
 
-    public void removeSubTask(SubTask subTask) {
-        listSubTasks.remove(subTask);
+    public void removeSubTask(int subTaskId) {
+        subTasks.remove(subTaskId);
     }
 
-    public ArrayList<SubTask> getListSubTasks() {
-        return listSubTasks;
+    public List<SubTask> getSubTasks() {
+        return new ArrayList<>(subTasks.values());
     }
 
     public void deleteList() {
-        listSubTasks.clear();
+        subTasks.clear();
     }
 
+    public Integer getEpicId() {
+        return null;
+    }
+
+    @Override
     public TypeTask getType() {
         return TypeTask.EPIC;
     }

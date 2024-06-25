@@ -1,0 +1,6 @@
+id, type, name, description, status, epicId, startTime, duration
+3,TASK,задача1,описание1Задачи,NEW,null,2024-06-07T19:00,PT15M
+4,TASK,задача2,описание2Задачи,NEW,null,2024-06-07T19:20,PT15M
+0,EPIC,эпик,описание эпика,NEW,null,2024-06-07T18:00,PT30M
+1,SUBTASK,подзадача1,описаниеСабтаска,NEW,0,2024-06-07T18:20,PT15M
+2,SUBTASK,подзадача2,описаниеСабтаска,NEW,0,2024-06-07T18:40,PT15M
