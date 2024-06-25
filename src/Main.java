@@ -1,7 +1,5 @@
 import exception.ValidationException;
-import model.*;
 import service.*;
-import java.io.File;
 
 public class Main {
 
@@ -9,7 +7,6 @@ public class Main {
 
         TaskManager manager = Managers.getDefault();
 
-   
     }
 }
 
