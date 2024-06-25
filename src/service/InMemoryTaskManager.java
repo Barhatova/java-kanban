@@ -42,6 +42,7 @@ public class InMemoryTaskManager implements TaskManager {
             if ((t.getEndTime().isAfter(task.getStartTime()) && task.getStartTime().isBefore(t.getEndTime())) ||
                     (t.getStartTime().equals(task.getStartTime()) && task.getEndTime().equals(t.getEndTime())) ||
                     (t.getEndTime().equals(task.getStartTime()) && task.getStartTime().equals(t.getEndTime()))) {
+               (t.getEndTime().equals(task.getStartTime()) && task.getStartTime().equals(t.getEndTime()))) {
                 throw new ValidationException("Пересечение с задачей:" + task);
             }
         }
@@ -108,7 +109,6 @@ public class InMemoryTaskManager implements TaskManager {
         checkTaskTime(subTask);
         prioritizedTasks.add(subTask);
         tasks.put(subTask.getId(), subTask);
-    }
 
     @Override
     public void updateEpic(Epic epic) {

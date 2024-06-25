@@ -2,8 +2,6 @@ import exception.ValidationException;
 import model.*;
 import service.*;
 import java.io.File;
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 public class Main {
 
@@ -11,38 +9,7 @@ public class Main {
 
         TaskManager manager = Managers.getDefault();
 
-        Epic epic = new Epic(0, TypeTask.EPIC, "эпик", "описание эпика", Status.NEW,
-                LocalDateTime.of(2024,06,07,18,00,00), Duration.ofMinutes(15));
-        manager.createEpic(epic);
-
-        SubTask s1 = new SubTask(1,TypeTask.SUBTASK,"подзадача1", "описаниеСабтаска", Status.NEW,
-                epic.getId(), LocalDateTime.of(2024,06,07,18,20,00),
-                Duration.ofMinutes(15));
-        manager.createSubTask(s1);
-        epic.addSubTask(s1);
-        SubTask s2 = new SubTask(2,TypeTask.SUBTASK,"подзадача2", "описаниеСабтаска", Status.NEW,
-                epic.getId(), LocalDateTime.of(2024,06,07,18,40,00),
-                Duration.ofMinutes(15));
-        manager.createSubTask(s2);
-        epic.addSubTask(s2);
-
-        Task task1 = new Task(3, TypeTask.TASK, "задача1", "описаниеТаска1", Status.NEW,
-                LocalDateTime.of(2024,06,07,19,00,00), Duration.ofMinutes(15));
-        manager.createTask(task1);
-        Task task2 = new Task(4, TypeTask.TASK, "задача2", "описаниеТаска2", Status.NEW,
-                LocalDateTime.of(2024,06,07,19,20,00), Duration.ofMinutes(15));
-        manager.createTask(task2);
-
-        TaskManager taskServiceReload = FileBackedTaskManager.loadFromFile(new File("resources/task.csv"));
-        System.out.println("Все задачи:");
-        System.out.println(taskServiceReload.getAllTasks());
-        System.out.println("Все сабтакси:");
-        System.out.println(taskServiceReload.getAllSubTasks());
-        System.out.println("Все эпики:");
-        System.out.println(taskServiceReload.getAllEpics());
-
-        System.out.println("Задачи из приоритизированного списка:");
-        System.out.println(manager.getPrioritizedTasks());
+   
     }
 }
 

@@ -71,7 +71,6 @@ public class InMemoryTaskManagerTest {
     public void testDuration() {
         Epic epic = new Epic(0, TypeTask.EPIC, "эпик", "описание эпика", Status.NEW);
         manager.createEpic(epic);
-
         SubTask s1 = new SubTask(1,TypeTask.SUBTASK,"подзадача1", "описаниеСабтаска", Status.NEW,
                 epic.getId(), LocalDateTime.of(2024,06,07,21,00,00),
                 Duration.ofMinutes(15));
@@ -82,7 +81,6 @@ public class InMemoryTaskManagerTest {
                 Duration.ofMinutes(15));
         manager.createSubTask(s2);
         epic.addSubTask(s2);
-
         assertEquals(s1.getDuration().plus(s2.getDuration()), epic.getDuration(), "Длительность эпика равна " +
                 "сумма длительностей подзадач");
 

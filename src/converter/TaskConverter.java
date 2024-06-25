@@ -1,7 +1,6 @@
 package converter;
 
 import model.*;
-import model.TypeTask;
 
     public class TaskConverter {
 
