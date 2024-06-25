@@ -3,7 +3,6 @@ import exception.*;
 import model.*;
 import java.time.LocalDateTime;
 import java.util.*;
-
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.nullsLast;
 
@@ -215,13 +214,11 @@ public class InMemoryTaskManager implements TaskManager {
         epics.clear();
     }
 
-
     @Override
     public List<SubTask> getAllSubTasksForEpic(Epic epic) {
         List<SubTask> subTasksList = new ArrayList<>(epic.getSubTasks());
         return  subTasksList;
     }
-
 
     @Override
     public Status calculateEpicStatus(Epic epic) {
