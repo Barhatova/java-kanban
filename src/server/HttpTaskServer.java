@@ -5,46 +5,24 @@ import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpServer;
 import handlers.*;
 import model.*;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import service.Managers;
-import service.TaskManager;
+import service.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.*;
 
 public class HttpTaskServer {
     public static final int PORT = 8080;
     TaskManager manager;
     HttpServer taskServer;
     Gson gson;
-    ErrorHandler errorHandler;
 
     public HttpTaskServer() {
-        this(Managers.getDefault());
+        this.manager = Managers.getDefault();
     }
 
     public HttpTaskServer(TaskManager manager) {
         this.manager = manager;
         this.gson = getGson();
-        this.errorHandler = new ErrorHandler() {
-            @Override
-            public void warning(SAXParseException exception) throws SAXException {
-
-            }
-
-            @Override
-            public void error(SAXParseException exception) throws SAXException {
-
-            }
-
-            @Override
-            public void fatalError(SAXParseException exception) throws SAXException {
-
-            }
-        };
 
         try {
             taskServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
