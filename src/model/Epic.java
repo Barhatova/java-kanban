@@ -73,7 +73,7 @@ public class Epic extends Task {
     }
 
     public void deleteList() {
-       subTasks.clear();
+        subTasks.clear();
     }
 
     public Integer getEpicId() {
