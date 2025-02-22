@@ -33,19 +33,19 @@
 
 ## Стек:
 
-Java Core,
-ООП,
-коллекции,
-исключения,
-работа с файлами,
-датами,
-HTTP,
-API,
-JSON, GSON,
-JUnit5,
-Insomnia,
-HttpServer, 
-KVServer.
+* Java Core,
+* ООП,
+* коллекции,
+* исключения,
+* работа с файлами,
+* датами,
+* HTTP,
+* API,
+* JSON, GSON,
+* JUnit5,
+* Insomnia,
+* HttpServer, 
+* KVServer.
 
 ## Инструкция по запуску прокта:
 
